@@ -1,13 +1,19 @@
 const API_BASE = "/"; // tu backend sirve este frontend
-
-// Cargar temperaturas y mostrar gráfica
 let temperaturaChart;
+
+// Cargar temperaturas y actualizar gráfica
 async function cargarTemperaturas() {
     const res = await fetch(API_BASE + "temperaturas");
     const datos = await res.json();
 
-    const labels = datos.map(d => new Date(d.fecha).toLocaleString());
-    const temps = datos.map(d => parseFloat(d.temperatura));
+    // Ordenamos por fecha
+    datos.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+
+    // Tomamos solo los últimos 20 registros para que la gráfica no se vea saturada
+    const ultimosDatos = datos.slice(-20);
+
+    const labels = ultimosDatos.map(d => new Date(d.fecha));
+    const temps = ultimosDatos.map(d => parseFloat(d.temperatura));
 
     const ctx = document.getElementById("temperaturaChart").getContext("2d");
 
@@ -25,14 +31,25 @@ async function cargarTemperaturas() {
                     data: temps,
                     borderColor: "blue",
                     backgroundColor: "rgba(0,123,255,0.2)",
-                    fill: true
+                    fill: true,
+                    tension: 0.2
                 }]
             },
             options: {
                 responsive: true,
                 scales: {
-                    x: { title: { display: true, text: "Fecha" } },
-                    y: { title: { display: true, text: "Temperatura °C" }, min: 0 }
+                    x: {
+                        type: "time",
+                        time: {
+                            unit: "minute",
+                            tooltipFormat: "MM/DD/YYYY, h:mm:ss a"
+                        },
+                        title: { display: true, text: "Fecha" }
+                    },
+                    y: {
+                        title: { display: true, text: "Temperatura °C" },
+                        min: 0
+                    }
                 }
             }
         });
@@ -56,9 +73,8 @@ async function cargarComida() {
     }
 }
 
-// Simular temperatura nueva
+// Generar temperatura simulada
 function generarTemperatura() {
-    // temperatura entre 23 y 27 °C
     return (23 + Math.random() * 4).toFixed(2);
 }
 
@@ -72,20 +88,14 @@ document.getElementById("alimentarPez").addEventListener("click", async () => {
         await fetch(API_BASE + "comidas", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                nombre: "Placeholder comida",
-                fecha: ahora
-            })
+            body: JSON.stringify({ nombre: "Placeholder comida", fecha: ahora })
         });
 
         // 2️⃣ Guardar nueva temperatura simulada
         await fetch(API_BASE + "temperatura", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                temperatura: nuevaTemp,
-                fecha: ahora
-            })
+            body: JSON.stringify({ temperatura: nuevaTemp, fecha: ahora })
         });
 
         alert(`¡Pez alimentado! Nueva temperatura registrada: ${nuevaTemp}°C`);
@@ -99,6 +109,6 @@ document.getElementById("alimentarPez").addEventListener("click", async () => {
     }
 });
 
-// Inicializar
+// Inicializar al cargar la página
 cargarTemperaturas();
 cargarComida();
