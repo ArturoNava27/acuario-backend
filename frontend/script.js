@@ -132,4 +132,3 @@ document.getElementById("alimentarPez").addEventListener("click", async () => {
 cargarTemperaturas();
 cargarComida();
 
-//fin
