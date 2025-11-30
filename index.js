@@ -25,7 +25,7 @@ app.get("/temperaturas", async (req, res) => {
 });
 
 // POST nueva temperatura
-app.post("/temperatura", async (req, res) => {
+app.post("/temperaturas", async (req, res) => {
   try {
     const { temperatura, fecha } = req.body;
     await pool.query(
@@ -49,7 +49,7 @@ app.get("/comidas", async (req, res) => {
 });
 
 // POST nueva comida
-app.post("/comida", async (req, res) => {
+app.post("/comidas", async (req, res) => {
   try {
     const { nombre, fecha } = req.body;
     await pool.query(
