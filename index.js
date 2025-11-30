@@ -67,20 +67,19 @@ app.get("/comidas", async (req, res) => {
   }
 });
 
-// POST nueva comida
+
+//post ultima comida
 app.post("/comidas", async (req, res) => {
   try {
-    const { nombre, fecha } = req.body;
-    await pool.query(
-      "INSERT INTO comida (nombre, fecha) VALUES ($1, $2)",
-      [nombre, fecha]
-    );
+    await pool.query("INSERT INTO comida (fecha) VALUES (NOW())");
     res.json({ ok: true });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error insertando comida" });
   }
 });
+
+
 
 // SERVIDOR
 const PORT = process.env.PORT || 3000;
