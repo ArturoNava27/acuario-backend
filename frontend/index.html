@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Acuario - Dashboard Acuario 🐟</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Plugin de zoom/pan -->
+    <!-- Plugin  de zoom/pan -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
 </head>
 
@@ -17,11 +19,9 @@
 
     <div class="panel">
         <h2>Temperaturas Registradas</h2>
-
         <!-- Gráfica -->
         <canvas id="temperaturaChart"></canvas>
-
-        <!-- Botón para resetear zoom -->
+        <!-- Botoón para resetear zoom -->
         <button onclick="temperaturaChart.resetZoom()">Resetear zoom</button>
     </div>
 
@@ -35,5 +35,8 @@
 
     <!-- Tu script -->
     <script src="frontend/script.js"></script>
+
+    <!-- 🔥 Tu JS debe ir EXACTAMENTE así (sin frontend/) -->
+    <script src="script.js"></script>
 </body>
 </html>
