@@ -2,25 +2,38 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title> Acuario - Dashboard Acuario 🐟</title>
+    <title>Acuario - Dashboard Acuario 🐟</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Plugin de zoom/pan -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
 </head>
+
 <body>
     <h1>Dashboard Acuario 🐟</h1>
 
     <div class="panel">
         <h2>Temperaturas Registradas</h2>
+
+        <!-- Gráfica -->
         <canvas id="temperaturaChart"></canvas>
+
+        <!-- Botón para resetear zoom -->
+        <button onclick="temperaturaChart.resetZoom()">Resetear zoom</button>
     </div>
 
     <div class="panel">
         <h2>Alimentación</h2>
         <p>Última comida: <span id="ultimaComida">Cargando...</span></p>
         <p>Próxima comida: <span id="proximaComida">Cargando...</span></p>
+
         <button id="alimentarPez">Alimentar al pez</button>
     </div>
 
+    <!-- Tu script -->
     <script src="script.js"></script>
 </body>
 </html>
