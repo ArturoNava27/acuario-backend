@@ -1,4 +1,5 @@
-const API_BASE = "/"; // tu backend
+const API_BASE = "https://acuario-backend.onrender.com/";
+
 
 // Cargar temperaturas y mostrar gráfica
 let temperaturaChart;
