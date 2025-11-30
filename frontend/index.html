@@ -2,21 +2,20 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Acuario - Monitoreo de Temperatura</title>
+    <title> Acuario - Dashboard Acuario 🐟</title>
     <link rel="stylesheet" href="style.css">
-
-    <!-- Chart.js y adaptador de fechas -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
 </head>
 <body>
+    <h1>Dashboard Acuario 🐟</h1>
+
     <div class="panel">
-        <h2>Temperaturas del acuario</h2>
+        <h2>Temperaturas Registradas</h2>
         <canvas id="temperaturaChart"></canvas>
     </div>
 
     <div class="panel">
-        <h2>Alimentación del pez</h2>
+        <h2>Alimentación</h2>
         <p>Última comida: <span id="ultimaComida">Cargando...</span></p>
         <p>Próxima comida: <span id="proximaComida">Cargando...</span></p>
         <button id="alimentarPez">Alimentar al pez</button>
