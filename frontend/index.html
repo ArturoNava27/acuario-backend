@@ -2,23 +2,23 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Acuario - Dashboard</title>
+    <title>Dashboard Acuario 🐟</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>🐠 Dashboard Acuario</h1>
+    <h1>Dashboard Acuario 🐟</h1>
 
     <div class="panel">
-        <h3>Temperatura del agua</h3>
-        <canvas id="graficaTemperatura" width="400" height="200"></canvas>
+        <h2>Temperaturas Registradas</h2>
+        <canvas id="temperaturaChart"></canvas>
     </div>
 
     <div class="panel">
-        <h3>Alimentación del pez</h3>
-        <p><strong>Última alimentación:</strong> <span id="ultimaComida">Cargando...</span></p>
-        <p><strong>Siguiente alimentación:</strong> <span id="siguienteComida">Cargando...</span></p>
-        <button id="btnAlimentar">Alimentar pez</button>
+        <h2>Alimentación</h2>
+        <p>Última comida: <span id="ultimaComida">Cargando...</span></p>
+        <p>Próxima comida: <span id="proximaComida">Cargando...</span></p>
+        <button id="alimentarPez">Alimentar al pez</button>
     </div>
 
     <script src="script.js"></script>

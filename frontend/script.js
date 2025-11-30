@@ -1,67 +1,77 @@
-const API_URL = "https://acuario-backend.onrender.com"; // ✅ tu backend
+const API_BASE = "/"; // tu backend ya sirve este frontend
 
-const ctx = document.getElementById("graficaTemperatura").getContext("2d");
-let graficaTemperatura;
-
-// Obtener temperaturas
+// Cargar temperaturas y mostrar gráfica
 async function cargarTemperaturas() {
-    const response = await fetch(`${API_URL}/temperaturas`);
-    const datos = await response.json();
+    const res = await fetch(API_BASE + "temperaturas");
+    const datos = await res.json();
 
-    const fechas = datos.map(d => new Date(d.fecha).toLocaleString());
-    const temps = datos.map(d => d.temperatura);
+    const labels = datos.map(d => new Date(d.fecha).toLocaleString());
+    const temps = datos.map(d => parseFloat(d.temperatura));
 
-    if (!graficaTemperatura) {
-        graficaTemperatura = new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: fechas,
-                datasets: [{
-                    label: "Temperatura (°C)",
-                    data: temps,
-                    borderColor: "blue",
-                    tension: 0.3
-                }]
-            },
-            options: {
-                scales: {
-                    y: { beginAtZero: true }
-                }
+    const ctx = document.getElementById("temperaturaChart").getContext("2d");
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels,
+            datasets: [{
+                label: "Temperatura (°C)",
+                data: temps,
+                borderColor: "blue",
+                backgroundColor: "rgba(0,123,255,0.2)",
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: { title: { display: true, text: "Fecha" } },
+                y: { title: { display: true, text: "Temperatura °C" }, min: 0 }
             }
-        });
+        }
+    });
+}
+
+// Cargar última comida y calcular próxima (+5 min)
+async function cargarComida() {
+    const res = await fetch(API_BASE + "comidas");
+    const data = await res.json();
+
+    if (data) {
+        const ultima = new Date(data.fecha);
+        document.getElementById("ultimaComida").textContent = ultima.toLocaleString();
+
+        const proxima = new Date(ultima.getTime() + 5 * 60 * 1000);
+        document.getElementById("proximaComida").textContent = proxima.toLocaleString();
     } else {
-        graficaTemperatura.data.labels = fechas;
-        graficaTemperatura.data.datasets[0].data = temps;
-        graficaTemperatura.update();
+        document.getElementById("ultimaComida").textContent = "Sin registros";
+        document.getElementById("proximaComida").textContent = "-";
     }
 }
 
-// Cargar última comida
-async function cargarComida() {
-    const response = await fetch(`${API_URL}/comidas`);
-    const ultimo = await response.json();
+// Botón para alimentar al pez
+document.getElementById("alimentarPez").addEventListener("click", async () => {
+    try {
+        const res = await fetch(API_BASE + "comidas", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nombre: "Placeholder comida",
+                fecha: new Date().toISOString()
+            })
+        });
 
-    const ultimaFecha = new Date(ultimo.fecha);
-    document.getElementById("ultimaComida").textContent = ultimaFecha.toLocaleString();
-
-    const siguiente = new Date(ultimaFecha.getTime() + 5 * 60000);
-    document.getElementById("siguienteComida").textContent = siguiente.toLocaleString();
-}
-
-// Botón alimentar pez
-document.getElementById("btnAlimentar").addEventListener("click", async () => {
-    alert("Se envió la señal para alimentar al pez (placeholder)");
-    
-    // Registrar en base de datos
-    await fetch(`${API_URL}/comidas`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre: "Alimentación automática", fecha: new Date().toISOString() })
-    });
-
-    cargarComida(); // Actualizar tiempo
+        const data = await res.json();
+        if (data.ok) {
+            alert("¡Pez alimentado! 🐟");
+            cargarComida(); // Actualiza la última y próxima comida
+        } else {
+            alert("Error alimentando al pez");
+        }
+    } catch (err) {
+        alert("Error conectando con la API");
+    }
 });
 
-// Iniciar
+// Inicializar
 cargarTemperaturas();
 cargarComida();
