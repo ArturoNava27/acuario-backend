@@ -8,6 +8,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const path = require("path");
+
+// Servir archivos estáticos
+app.use(express.static(path.join(__dirname, "frontend")));
+
+// Ruta principal
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "index.html"));
+});
+
+
 // CONFIGURACIÓN DE POSTGRES
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,

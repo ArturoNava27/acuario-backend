@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Acuario - Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>🐠 Dashboard Acuario</h1>
+
+    <div class="panel">
+        <h3>Temperatura del agua</h3>
+        <canvas id="graficaTemperatura" width="400" height="200"></canvas>
+    </div>
+
+    <div class="panel">
+        <h3>Alimentación del pez</h3>
+        <p><strong>Última alimentación:</strong> <span id="ultimaComida">Cargando...</span></p>
+        <p><strong>Siguiente alimentación:</strong> <span id="siguienteComida">Cargando...</span></p>
+        <button id="btnAlimentar">Alimentar pez</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
