@@ -1,3 +1,5 @@
+require("dotenv").config(); // 👈 Agregar aquí (primera línea)
+
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
@@ -15,7 +17,7 @@ const pool = new Pool({
 // GET todas las temperaturas
 app.get("/temperaturas", async (req, res) => {
   try {
-    const q = await pool.query("SELECT * FROM temperaturaRegistrada ORDER BY fecha ASC");
+    const q = await pool.query("SELECT * FROM temperatura_registrada ORDER BY fecha ASC");
     res.json(q.rows);
   } catch (err) {
     res.status(500).json({ error: "Error obteniendo temperaturas" });
@@ -27,7 +29,7 @@ app.post("/temperatura", async (req, res) => {
   try {
     const { temperatura, fecha } = req.body;
     await pool.query(
-      "INSERT INTO temperaturaRegistrada (temperatura, fecha) VALUES ($1, $2)",
+      "INSERT INTO temperatura_registrada (temperatura, fecha) VALUES ($1, $2)",
       [temperatura, fecha]
     );
     res.json({ ok: true });
@@ -49,10 +51,10 @@ app.get("/comidas", async (req, res) => {
 // POST nueva comida
 app.post("/comida", async (req, res) => {
   try {
-    const { fecha } = req.body;
+    const { nombre, fecha } = req.body;
     await pool.query(
-      "INSERT INTO comida (fecha) VALUES ($1)",
-      [fecha]
+      "INSERT INTO comida (nombre, fecha) VALUES ($1, $2)",
+      [nombre, fecha]
     );
     res.json({ ok: true });
   } catch (err) {
