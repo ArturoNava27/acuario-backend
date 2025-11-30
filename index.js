@@ -1,4 +1,4 @@
-require("dotenv").config(); // 👈 Agregar aquí (primera línea)
+require("dotenv").config(); // 👈 Primera línea
 
 const express = require("express");
 const cors = require("cors");
@@ -14,12 +14,18 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
+// RUTA PRINCIPAL (PARA PRUEBAS EN NAVEGADOR)
+app.get("/", (req, res) => {
+  res.send("Servidor funcionando correctamente 🚀");
+});
+
 // GET todas las temperaturas
 app.get("/temperaturas", async (req, res) => {
   try {
     const q = await pool.query("SELECT * FROM temperatura_registrada ORDER BY fecha ASC");
     res.json(q.rows);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Error obteniendo temperaturas" });
   }
 });
@@ -34,6 +40,7 @@ app.post("/temperaturas", async (req, res) => {
     );
     res.json({ ok: true });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Error insertando temperatura" });
   }
 });
@@ -44,6 +51,7 @@ app.get("/comidas", async (req, res) => {
     const q = await pool.query("SELECT * FROM comida ORDER BY fecha DESC LIMIT 1");
     res.json(q.rows[0] || null);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Error obteniendo última comida" });
   }
 });
@@ -58,6 +66,7 @@ app.post("/comidas", async (req, res) => {
     );
     res.json({ ok: true });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Error insertando comida" });
   }
 });
